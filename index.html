@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>LIC SBA Preeti95272 - Team Progress Tracker</title>
+  <title>LIC SBA Preeti95272 - Team Portal</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -15,7 +15,6 @@
 
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    .gold-gradient { background: linear-gradient(135deg, #f59e0b, #d97706); }
     .lic-blue { background-color: #00529b; }
     .lic-blue-text { color: #00529b; }
   </style>
@@ -28,23 +27,35 @@
       <div class="bg-amber-400 text-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shadow">LIC</div>
       <div>
         <h1 class="text-base font-bold leading-tight">Team Preeti95272</h1>
-        <p class="text-xs text-amber-300 font-medium">Business Progress Tracker</p>
+        <p class="text-xs text-amber-300 font-medium">Business Portal & News</p>
       </div>
     </div>
     <div id="userBadge" class="text-xs bg-blue-900/60 border border-blue-400/30 px-2 py-1 rounded-full text-blue-100 hidden"></div>
   </header>
 
-  <!-- Main Views Container -->
-  <main class="max-w-md mx-auto p-4">
+  <!-- Main Container -->
+  <main class="max-w-md mx-auto p-4 space-y-4">
 
-    <!-- 1. Registration / Login Screen (Shown if not logged in) -->
+    <!-- Top Two Buttons (मुख्य बातमी / होम vs लीडरबोर्ड) -->
+    <div id="topToggleBar" class="hidden grid grid-cols-2 gap-2 bg-slate-200 p-1.5 rounded-2xl shadow-inner text-sm font-bold">
+      <button id="btnTopNews" onclick="switchTopTab('news')" class="py-2.5 rounded-xl bg-white text-blue-900 shadow transition flex items-center justify-center space-x-1.5">
+        <i class="fa-solid fa-bullhorn text-amber-600"></i>
+        <span>मुख्य बातम्या</span>
+      </button>
+      <button id="btnTopLeaderboard" onclick="switchTopTab('leaderboard')" class="py-2.5 rounded-xl text-slate-600 transition flex items-center justify-center space-x-1.5">
+        <i class="fa-solid fa-trophy text-amber-500"></i>
+        <span>लीडरबोर्ड</span>
+      </button>
+    </div>
+
+    <!-- 1. Registration / Login Screen -->
     <div id="authView" class="space-y-4">
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 text-center">
         <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
           <i class="fa-solid fa-user-shield"></i>
         </div>
         <h2 class="text-lg font-bold text-slate-800">एजंट नोंदणी / लॉगिन</h2>
-        <p class="text-xs text-slate-500 mt-1">तुमची दैनिक प्रोग्रेस भरण्यासाठी आणि टीम रँकिंग पाहण्यासाठी लॉगिन करा</p>
+        <p class="text-xs text-slate-500 mt-1">बातम्या, स्पर्धा आणि दैनिक प्रोग्रेस पाहण्यासाठी लॉगिन करा</p>
 
         <form id="regForm" class="mt-4 text-left space-y-3">
           <div>
@@ -60,7 +71,7 @@
             <input type="tel" id="regMobile" required class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="10 अंकी मोबाईल नंबर">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">4-अंकी सिक्युरिटी पिन</label>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">४-अंकी सिक्युरिटी पिन</label>
             <input type="password" maxlength="4" id="regPin" required class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="****">
           </div>
           <button type="submit" class="w-full bg-[#00529b] text-white py-2.5 rounded-xl font-semibold text-sm shadow hover:bg-blue-800 transition">नोंदणी / लॉगिन करा</button>
@@ -68,9 +79,25 @@
       </div>
     </div>
 
-    <!-- 2. Leaderboard View (Home) -->
-    <div id="homeView" class="hidden space-y-4">
-      
+    <!-- 2. News / Home Screen (मुख्य बातम्यांचे पान) -->
+    <div id="newsView" class="hidden space-y-3">
+      <div class="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-2xl p-4 text-white shadow-sm flex items-center justify-between">
+        <div>
+          <h2 class="text-sm font-bold text-amber-300 flex items-center">
+            <i class="fa-solid fa-newspaper mr-1.5"></i> ताज्या अपडेट्स & घोषणा
+          </h2>
+          <p class="text-[11px] text-blue-100 mt-0.5">SBA Preeti95272 टीमचे विशेष परिपत्रके आणि स्पर्धा</p>
+        </div>
+      </div>
+
+      <!-- Live News Cards Container -->
+      <div id="newsList" class="space-y-3">
+        <div class="p-6 text-center text-slate-400 text-xs">बातम्या लोड होत आहेत...</div>
+      </div>
+    </div>
+
+    <!-- 3. Leaderboard Screen -->
+    <div id="leaderboardView" class="hidden space-y-4">
       <!-- Timeframe Toggle Buttons -->
       <div class="flex bg-slate-200 p-1 rounded-xl text-xs font-bold text-slate-600">
         <button id="btnMonth" onclick="switchFilter('month')" class="flex-1 py-1.5 rounded-lg bg-white text-blue-900 shadow">चालू महिना</button>
@@ -115,7 +142,7 @@
       </div>
     </div>
 
-    <!-- 3. Add Progress Entry View -->
+    <!-- 4. Add Progress Entry View -->
     <div id="entryView" class="hidden space-y-4">
       <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
         <h2 class="text-base font-bold text-slate-800 mb-1">नवीन बिझनेस प्रोग्रेस नोंदवा</h2>
@@ -128,8 +155,8 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">पॉलिसी संख्या (Number of Policies - NOP)</label>
-            <input type="number" min="1" id="entNop" required class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="उदा. 2">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">पॉलिसी संख्या (NOP)</label>
+            <input type="number" min="1" id="entNop" required class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="उदा. 1">
           </div>
 
           <div>
@@ -147,7 +174,7 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">प्रीमियम रक्कम (₹ Premium Amount)</label>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">प्रीमियम रक्कम (₹ Amount)</label>
             <input type="number" min="1" id="entAmount" required class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="उदा. 35000">
           </div>
 
@@ -166,7 +193,7 @@
       </div>
     </div>
 
-    <!-- 4. SBA Admin View -->
+    <!-- 5. SBA Admin View -->
     <div id="adminView" class="hidden space-y-4">
       <div id="adminLoginCard" class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm text-center">
         <div class="w-12 h-12 bg-blue-100 text-blue-900 rounded-full flex items-center justify-center mx-auto mb-2 text-xl">
@@ -185,14 +212,28 @@
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold text-slate-600">ॲडमिन डॅशबोर्ड</span>
           <button onclick="exportToCSV()" class="bg-emerald-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold flex items-center space-x-1 shadow">
-            <i class="fa-solid fa-file-excel mr-1"></i> Excel/CSV Export
+            <i class="fa-solid fa-file-excel mr-1"></i> Excel Export
           </button>
+        </div>
+
+        <!-- Post New Announcement / News -->
+        <div class="bg-white rounded-2xl border border-blue-200 p-4 shadow-sm space-y-3">
+          <h3 class="text-xs font-bold text-blue-950 uppercase flex items-center">
+            <i class="fa-solid fa-bullhorn text-amber-500 mr-1.5"></i> नवीन बातमी / घोषणा पोस्ट करा
+          </h3>
+          <form id="postNewsForm" class="space-y-2.5">
+            <input type="text" id="newsTitle" required placeholder="बातमीचे शीर्षक (उदा. विजयादशमी स्पेशल स्पर्धा)" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-blue-500">
+            <textarea id="newsContent" rows="3" required placeholder="बातमीचा संपूर्ण तपशील..." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            <button type="submit" id="btnPostNews" class="w-full bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-xl text-xs font-bold shadow transition">
+              बातमी प्रकाशित करा
+            </button>
+          </form>
         </div>
 
         <!-- Pending Agent Approvals -->
         <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
           <h3 class="text-xs font-bold text-slate-700 uppercase mb-3 flex items-center justify-between">
-            <span>प्रलंबित एजंट मंजुरी (Pending Approvals)</span>
+            <span>प्रलंबित एजंट मंजुरी</span>
             <span id="pendingCount" class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-[10px]">0</span>
           </h3>
           <div id="pendingList" class="space-y-2 text-xs">
@@ -202,7 +243,7 @@
 
         <!-- All Business Records (For editing / deleting) -->
         <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-          <h3 class="text-xs font-bold text-slate-700 uppercase mb-3">सर्व नोंदी व्यवस्थापन (Edit/Delete)</h3>
+          <h3 class="text-xs font-bold text-slate-700 uppercase mb-3">सर्व नोंदी व्यवस्थापन (Delete)</h3>
           <div id="adminEntriesList" class="space-y-2 text-xs max-h-72 overflow-y-auto">
             <p class="text-slate-400">डेटा लोड होत आहे...</p>
           </div>
@@ -215,8 +256,8 @@
   <!-- Bottom Navigation Bar -->
   <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-6 py-2 flex justify-around items-center z-40 max-w-md mx-auto">
     <button onclick="navigate('home')" id="navHome" class="flex flex-col items-center text-blue-900 font-bold text-[10px]">
-      <i class="fa-solid fa-chart-line text-lg"></i>
-      <span class="mt-0.5">प्रोग्रेस</span>
+      <i class="fa-solid fa-house text-lg"></i>
+      <span class="mt-0.5">मुख्य</span>
     </button>
     <button onclick="navigate('entry')" id="navEntry" class="flex flex-col items-center text-slate-400 font-medium text-[10px]">
       <i class="fa-solid fa-circle-plus text-lg"></i>
@@ -232,7 +273,7 @@
   <div id="toast" class="fixed top-14 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-4 py-2 rounded-xl shadow-lg transition duration-300 opacity-0 pointer-events-none z-50"></div>
 
   <script>
-    // --- 1. Firebase Configuration (Direct from your project) ---
+    // --- 1. Firebase Configuration ---
     const firebaseConfig = {
       apiKey: "AIzaSyAz9U-IwDJ32jhMEd-HzyOENgKDAstH9Vs",
       authDomain: "lic-team-preeti.firebaseapp.com",
@@ -242,24 +283,23 @@
       appId: "1:713987469652:web:e9468bfc09ebab40ae58c1"
     };
 
-    // Initialize Firebase & Firestore
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // SBA Master Admin Password (तुम्ही हा बदलू शकता)
     const SBA_ADMIN_PASS = "Preeti95272";
 
     // App State
     let currentUser = JSON.parse(localStorage.getItem('lic_agent_user')) || null;
     let currentFilter = 'month'; // 'month' or 'year'
     let currentPremMode = 'gross'; // 'gross' or 'credit'
+    let currentTopTab = 'news'; // 'news' or 'leaderboard'
     let allEntries = [];
     let allAgents = [];
+    let allNews = [];
 
     // Set today's date in form default
     document.getElementById('entDate').value = new Date().toISOString().split('T')[0];
 
-    // Notification helper
     function showToast(msg) {
       const toast = document.getElementById('toast');
       toast.textContent = msg;
@@ -271,7 +311,6 @@
       }, 3000);
     }
 
-    // Toggle SP / NSP UI
     function updatePremTypeUI() {
       const isNsp = document.querySelector('input[name="premType"]:checked').value === 'NSP';
       const lblNsp = document.getElementById('lblNsp');
@@ -285,14 +324,35 @@
       }
     }
 
+    // Top Header Switch (मुख्य बातम्या vs लीडरबोर्ड)
+    function switchTopTab(tab) {
+      currentTopTab = tab;
+      const btnNews = document.getElementById('btnTopNews');
+      const btnBoard = document.getElementById('btnTopLeaderboard');
+
+      if (tab === 'news') {
+        btnNews.className = "py-2.5 rounded-xl bg-white text-blue-900 shadow transition flex items-center justify-center space-x-1.5";
+        btnBoard.className = "py-2.5 rounded-xl text-slate-600 transition flex items-center justify-center space-x-1.5";
+        document.getElementById('newsView').classList.remove('hidden');
+        document.getElementById('leaderboardView').classList.add('hidden');
+      } else {
+        btnBoard.className = "py-2.5 rounded-xl bg-white text-blue-900 shadow transition flex items-center justify-center space-x-1.5";
+        btnNews.className = "py-2.5 rounded-xl text-slate-600 transition flex items-center justify-center space-x-1.5";
+        document.getElementById('leaderboardView').classList.remove('hidden');
+        document.getElementById('newsView').classList.add('hidden');
+        calculateLeaderboard();
+      }
+    }
+
     // Navigation
     function navigate(view) {
-      document.getElementById('homeView').classList.add('hidden');
+      document.getElementById('newsView').classList.add('hidden');
+      document.getElementById('leaderboardView').classList.add('hidden');
       document.getElementById('entryView').classList.add('hidden');
       document.getElementById('adminView').classList.add('hidden');
       document.getElementById('authView').classList.add('hidden');
+      document.getElementById('topToggleBar').classList.add('hidden');
 
-      // Update nav icons
       ['navHome', 'navEntry', 'navAdmin'].forEach(id => {
         document.getElementById(id).className = "flex flex-col items-center text-slate-400 font-medium text-[10px]";
       });
@@ -301,8 +361,10 @@
         if (!currentUser) {
           document.getElementById('authView').classList.remove('hidden');
         } else {
-          document.getElementById('homeView').classList.remove('hidden');
-          document.getElementById('navHome').className = "flex flex-col items-center text-blue-900 font-bold text-[10px]";
+          document.getElementById('topToggleBar').classList.remove('hidden');
+          document.getElementById('navHome').classN
+                    document.getElementById('navHome').className = "flex flex-col items-center text-blue-900 font-bold text-[10px]";
+          switchTopTab(currentTopTab);
         }
       } else if (view === 'entry') {
         if (!currentUser) {
@@ -340,14 +402,12 @@
             showToast("तुमचे खाते अद्याप SBA Preeti मॅडम कडून मंजुरीच्या प्रतीक्षेत आहे.");
             return;
           }
-          // Login success
           currentUser = data;
           localStorage.setItem('lic_agent_user', JSON.stringify(data));
           updateUserBadge();
           navigate('home');
           showToast(`स्वागत आहे, ${data.name}!`);
         } else {
-          // New Registration
           const newAgent = {
             name: name,
             code: code,
@@ -372,9 +432,14 @@
       }
     }
 
-    // --- 3. Business Progress Entry Submission ---
+    // --- 3. Business Progress Entry Submission (डबल एन्ट्री प्रतिबंधक) ---
+    let isSubmitting = false;
+
     document.getElementById('progressForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      e.stopImmediatePropagation();
+
+      if (isSubmitting) return;
       if (!currentUser) return;
 
       const date = document.getElementById('entDate').value;
@@ -383,6 +448,7 @@
       const amount = parseFloat(document.getElementById('entAmount').value);
 
       const submitBtn = document.getElementById('btnSubmitEntry');
+      isSubmitting = true;
       submitBtn.disabled = true;
       submitBtn.textContent = "नोंद होत आहे...";
 
@@ -397,31 +463,85 @@
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-           await db.collection('entries').add({
-          agentCode: currentUser.code,
-          agentName: currentUser.name,
-          date: date,
-          nop: nop,
-          type: type,
-          amount: amount,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
         showToast("बिझनेस प्रोग्रेस यशस्वीरीत्या सेव्ह झाली! 🎉");
         document.getElementById('entNop').value = '';
         document.getElementById('entAmount').value = '';
+        switchTopTab('leaderboard');
         navigate('home');
       } catch (err) {
         alert("त्रुटी आली: " + err.message);
       } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "प्रोग्रेस सबमिट करा";
+        setTimeout(() => {
+          isSubmitting = false;
+          submitBtn.disabled = false;
+          submitBtn.textContent = "प्रोग्रेस सबमिट करा";
+        }, 1500);
       }
     });
 
-    // --- 4. Realtime Firestore Sync & Leaderboard Logic ---
+    // --- 4. News & Announcements Handling ---
+    document.getElementById('postNewsForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('newsTitle').value.trim();
+      const content = document.getElementById('newsContent').value.trim();
+      const btn = document.getElementById('btnPostNews');
+
+      btn.disabled = true;
+      btn.textContent = "पोस्ट होत आहे...";
+
+      try {
+        await db.collection('news').add({
+          title: title,
+          content: content,
+          date: new Date().toLocaleDateString('mr-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        document.getElementById('newsTitle').value = '';
+        document.getElementById('newsContent').value = '';
+        showToast("बातमी यशस्वीरीत्या प्रकाशित झाली!");
+      } catch (err) {
+        alert("त्रुटी आली: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "बातमी प्रकाशित करा";
+      }
+    });
+
+    function renderNewsCards() {
+      const container = document.getElementById('newsList');
+      if (allNews.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white rounded-2xl p-6 text-center text-slate-400 border border-slate-200">
+            <i class="fa-regular fa-newspaper text-3xl mb-2 text-slate-300"></i>
+            <p class="text-xs">अद्याप कोणतीही नवीन घोषणा किंवा बातमी नाही.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = allNews.map(item => `
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm relative overflow-hidden">
+          <div class="w-1.5 h-full bg-amber-500 absolute left-0 top-0"></div>
+          <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1 pl-1">
+            <span class="font-semibold text-blue-900"><i class="fa-solid fa-bullhorn mr-1"></i> LIC SBA Preeti95272</span>
+            <span>${item.date || ''}</span>
+          </div>
+          <h3 class="font-bold text-slate-800 text-sm mb-1.5 pl-1 leading-snug">${item.title}</h3>
+          <p class="text-xs text-slate-600 pl-1 whitespace-pre-line leading-relaxed">${item.content}</p>
+        </div>
+      `).join('');
+    }
+
+    // --- 5. Realtime Firestore Sync & Leaderboard Logic ---
     function setupRealtimeListeners() {
-      // Sync Entries
+      db.collection('news').orderBy('timestamp', 'desc').onSnapshot((snap) => {
+        allNews = [];
+        snap.forEach(doc => {
+          allNews.push({ id: doc.id, ...doc.data() });
+        });
+        renderNewsCards();
+      });
+
       db.collection('entries').orderBy('date', 'desc').onSnapshot((snap) => {
         allEntries = [];
         snap.forEach(doc => {
@@ -432,7 +552,6 @@
         renderAdminEntries();
       });
 
-      // Sync Agents
       db.collection('agents').onSnapshot((snap) => {
         allAgents = [];
         snap.forEach(doc => {
@@ -473,7 +592,6 @@
       if (currentFilter === 'month') {
         return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
       } else {
-        // Financial Year: 1st April to 31st March
         const currentYear = now.getFullYear();
         const fyStart = now.getMonth() >= 3 ? new Date(currentYear, 3, 1) : new Date(currentYear - 1, 3, 1);
         const fyEnd = now.getMonth() >= 3 ? new Date(currentYear + 1, 2, 31, 23, 59, 59) : new Date(currentYear, 2, 31, 23, 59, 59);
@@ -506,27 +624,24 @@
         if (item.type === 'SP') {
           stats[item.agentCode].sp += amt;
           stats[item.agentCode].gross += amt;
-          stats[item.agentCode].credit += (amt * 0.10); // 10% credit
+          stats[item.agentCode].credit += (amt * 0.10);
         } else {
           stats[item.agentCode].nsp += amt;
           stats[item.agentCode].gross += amt;
-          stats[item.agentCode].credit += amt; // 100% credit
+          stats[item.agentCode].credit += amt;
         }
       });
 
       const list = Object.values(stats);
 
-      // Sort for Premium Topper
       const sortedByPrem = [...list].sort((a, b) => {
         const valB = currentPremMode === 'gross' ? b.gross : b.credit;
         const valA = currentPremMode === 'gross' ? a.gross : a.credit;
         return valB - valA;
       });
 
-      // Sort for NOP Topper
       const sortedByNop = [...list].sort((a, b) => b.nop - a.nop);
 
-      // Update Toppers Podium
       if (sortedByNop.length > 0 && sortedByNop[0].nop > 0) {
         document.getElementById('topNopName').textContent = sortedByNop[0].name;
         document.getElementById('topNopVal').textContent = `${sortedByNop[0].nop} Policies`;
@@ -544,7 +659,6 @@
         document.getElementById('topPremVal').textContent = "₹0";
       }
 
-      // Render Table
       const container = document.getElementById('leaderboardList');
       if (sortedByPrem.length === 0) {
         container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">या कालावधीत अद्याप कोणतीही नोंद झालेली नाही.</div>`;
@@ -594,7 +708,7 @@
       `).join('');
     }
 
-    // --- 5. SBA Admin Functions ---
+    // --- 6. SBA Admin Functions ---
     function checkAdminLogin() {
       const pass = document.getElementById('adminPassword').value;
       if (pass === SBA_ADMIN_PASS) {
@@ -667,7 +781,6 @@
       }
     }
 
-    // Export to Excel / CSV
     function exportToCSV() {
       if (allEntries.length === 0) {
         alert("डाउनलोड करण्यासाठी कोणतीही नोंद उपलब्ध नाही.");
